@@ -1,3 +1,4 @@
+import math
 '''this is assiagment no to write good and concise code'''
 
 def nested_prime(n):
@@ -6,8 +7,6 @@ def nested_prime(n):
     
     prime=[i for i in range(2,n) if all(bool(i%j) for j in range(2,i) )]
     return prime
-
-
 
 def old_school_reverse(n):
     '''Write a function old_school_reverse() that reverses a string or number without using 
@@ -21,13 +20,11 @@ def old_school_reverse(n):
     return reversed_n
 
 def dict_a_noodle(data):
-    
-    data= {value:key   for key, value in data.items() if isinstance(key, str)  }
-    # noodle_dictt = {value: key  for key, value in data.items() if not isinstance(key, str)}
-    # noodle_dict.update(noodle_dictt)
-    # return noodle_dict
-    return data
 
+    changed_dict= {value:key   for key, value in data.items() if isinstance(key, str)  }
+    unchanged_dict = {key:value  for key, value in data.items() if not isinstance(key, str)}
+    changed_dict.update(unchanged_dict)
+    return changed_dict
 
 def fib_squares(n):
     '''Write a function fib_squares() that returns a list of numbers where each element
@@ -48,12 +45,48 @@ def flatten(data):
     
     return data[:1] + flatten(data[1:])
 
-
-
 def dict_of_lists(data):
     result= flatten(data)
     final=[i for i in result if isinstance(i,(list,str,tuple,set,int))]
-    return final        
+    return final
+        
+def dict_from_lists(list1, list2):
+    data={i:j  for i,j in zip(list1,list2)}
+    return data
+
+def my_secret(message):
+    my_list=message.split(' ')
+    str_message=''.join(my_list)
+
+    length=math.ceil(len(str_message)**.5)
+
+    for i in range(0,len(str_message),length):
+        print(str_message[i:i+length])
+
+def phone_words(ph1:str, ph2:str):
+
+    hash_dict = {
+        '2': 'ABC', '3': 'DEF', '4': 'GHI', '5': 'JKL',
+        '6': 'MNO', '7': 'PRS', '8': 'TUV', '9': 'WXY'
+    }
+
+    def words(phone_number):
+        if '0' in phone_number or '1' in phone_number:
+            return []  
+        combinations = ['']
+        for digit in phone_number:
+            letters = hash_dict[digit]
+            new_combinations = []
+            for prefix in combinations:
+                for letter in letters:
+                    new_combinations.append(prefix + letter)
+            combinations = new_combinations
+
+
+        return combinations
+
+    result = {ph1: words(ph1), ph2: words(ph2)}
+    return result
 
 # def set_complement(*args, verbose=False):
 
@@ -62,4 +95,7 @@ if __name__=='__main__':
     # print(old_school_reverse('123'))
     # print(fib_squares(10))
     # print(dict_of_lists([[[1, 2, 3], [4, [5, 6]], 6, [7, 8, 9], [8, [8, 9, "a"], {5: 6}, ["b"], "ab"]], [5, 2, 1], 1]))
-    print(dict_a_noodle({'answernum':23,1:'ans'}))
+    # print(dict_a_noodle({'answernum':23,1:'ans'}))
+    # print(dict_from_lists([1, 2, 3],["a", "b", "c"]))
+    # print(my_secret("If man was meant to stay on the ground god would have given us roots"))
+    print(phone_words('22','1'))
