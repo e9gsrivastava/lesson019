@@ -47,9 +47,16 @@ def flatten(data):
 
 def dict_of_lists(data):
     result= flatten(data)
-    final=[i for i in result if isinstance(i,(list,str,tuple,set,int))]
+    print(result)
+    final={i:result.count(i) for i in result if isinstance(i,(list,str,tuple,set,int))}
     return final
         
+def list_of_lists(data):
+    final=dict_of_lists(data)
+    result=[i for i in final  ]
+ 
+    return result
+ 
 def dict_from_lists(list1, list2):
     data={i:j  for i,j in zip(list1,list2)}
     return data
@@ -88,9 +95,43 @@ def phone_words(ph1:str, ph2:str):
     result = {ph1: words(ph1), ph2: words(ph2)}
     return result
 
-# def set_complement(*args, verbose=False):
+def set_complement(*args, verbose=True):
+    result=[]
+    for i, list1 in enumerate(args[:len(args)-1]):
+        for list2 in args[i:len(args)]:
+            if (set(list1) - set(list2)):
+                result.append(list(set(list1) - set(list2)))
+    if verbose:
+        all_data=[i for i in args ]
+        return all_data+result        
+    return result
+
+def set_intersection(*args, verbose=False):
+    result=[]
+    for i, list1 in enumerate(args[:len(args)-1]):
+        for list2 in args[i+1:len(args)]:
+            if (set(list1) & set(list2)):
+                # print(f'{list1}{list2} is this    {set(list1) & set(list2)}')
+                result.append(list(set(list1) & set(list2)))
+    
+
+
+    all_intersection=set(args[0])
+    for i, list1 in enumerate(args[1:len(args)]):
+        all_intersection  &=set(args[i])
+
+
+    result.append(list(all_intersection))
+    
+    if verbose:
+        all_data=[arg for arg in args ]
+        return all_data+result        
+    return result
+
 
 if __name__=='__main__':
+
+    
     # print(nested_prime(10))
     # print(old_school_reverse('123'))
     # print(fib_squares(10))
@@ -98,4 +139,7 @@ if __name__=='__main__':
     # print(dict_a_noodle({'answernum':23,1:'ans'}))
     # print(dict_from_lists([1, 2, 3],["a", "b", "c"]))
     # print(my_secret("If man was meant to stay on the ground god would have given us roots"))
-    print(phone_words('22','1'))
+    # print(phone_words('22','1'))
+    # print(list_of_lists([[[1, 2, 3], [4, [5, 6]], 6, [7, 8, 9], [8, [8, 9, "a"], {5: 6}, ["b"], "ab"]], [5, 2, 1], 1]))
+    # print(set_complement([1, 2, 3, 4],[1, 3],[1, 2,3]))
+    print(set_intersection([1, 2, 3, 4],[1, 3],[1, 2,3]))
